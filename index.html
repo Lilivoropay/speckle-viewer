@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Speckle Viewer</title>
+    <script type="module" src="./dist/viewer.mjs"></script>
+    <style>
+      html, body, #app {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module">
+      import { Viewer } from './dist/viewer.mjs'
+
+      const viewer = new Viewer({ container: document.getElementById('app') })
+      viewer.init()
+
+      viewer.loadModelFromUrl(
+        'https://speckle.xyz/streams/d90ed744a3/models/733a102ccc'
+      )
+
+      // Кольори за Assembly Name
+      viewer.on('load-complete', () => {
+        const colors = {
+          "UD-T1": "#800080",
+          "UD-T2": "#008000",
+          "UD-T3": "#d35400"
+        }
+        viewer.getObjects().forEach(obj => {
+          const name = obj.properties?.["Assembly Name"]
+          if (name) {
+            const prefix = name.split(" ")[0]
+            if (colors[prefix]) viewer.setColor(obj.id, colors[prefix])
+          }
+        })
+      })
+    </script>
+  </body>
+</html>

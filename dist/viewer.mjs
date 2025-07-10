@@ -1,0 +1,1 @@
+// Dummy viewer.mjs for packaging test
